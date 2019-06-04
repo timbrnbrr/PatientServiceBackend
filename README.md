@@ -8,7 +8,7 @@ Download a IDE like Webstorm or IntelliJ (use your hs-karlsruhe.de Mail to get a
 ## Git
 - Install git
 - To get the project from github look for something like VCS on your IDE and than checkout from Version Control
-  (it works like this on Webstorm), enter der URL of our github repository (https://github.com/SilverJan/AWPSS17/)
+  (it works like this on Webstorm), enter der URL of our github repository
   and enter your credentials.
 
 ## Install Node
@@ -17,7 +17,7 @@ Download the latest Node Installer from https://nodejs.org/en/
 ## Install MongoDB
 - Download the latest MongoDB Version from https://www.mongodb.com/download-center?jmp=nav#community
 - Choose a location for your mongo directory, as u have to find it again for adding mongos /bin directory to your path
-variable (my Path looks like this: /Users/jankiefer/Mongo/bin)
+variable 
 - Check if the mongodb starts correctly executing the command: mongod
 - Set Endpoint where the data gets stored execute in terminal: mongod --dbpath /Path/to/dbStorage
 
