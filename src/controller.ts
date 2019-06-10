@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
  */
 
 //Tells mongoose the name of the db where it should connect to
-mongoose.connect("mongodb://localhosst/awpDB");
+mongoose.connect("mongodb://localhost/awpDB");
 mongoose.set('debug', true);
 
 /*POST controller**/
