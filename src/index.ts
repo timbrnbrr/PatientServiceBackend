@@ -42,9 +42,10 @@ app.get('/question/:id', controller.getQuestionnaire);
 /* GET all Element service*/
 app.get('/question', controller.getAllQuestionnaire);
 
-app.get('/test', function (req, res) {
-  res.send('Received a GET HTTP method TEST');
-});
+
+app.get('/timeSlot',  controller.getAllTimeSlots);
+
+
 
 
 export = server;

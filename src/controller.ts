@@ -132,9 +132,17 @@ let getAllQuestionnaire = function (req: Request, res: Response): void {
     });
 };
 
+let getAllTimeSlots = function (req: Request, res: Response): void {
+
+    let timeSlots = ["8:30","10:00","16:30"];
+
+    res.json(timeSlots);
+};
+
 module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,
     getQuestionnaire: getQuestionnaire,
     getAllQuestionnaire: getAllQuestionnaire,
+    getAllTimeSlots:getAllTimeSlots
 };
