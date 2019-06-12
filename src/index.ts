@@ -42,8 +42,9 @@ app.get('/question/:id', controller.getQuestionnaire);
 /* GET all Element service*/
 app.get('/question', controller.getAllQuestionnaire);
 
-
 app.get('/timeSlot',  controller.getAllTimeSlots);
+
+app.post('/appointment',  controller.createAppointment);
 
 
 

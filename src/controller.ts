@@ -132,11 +132,42 @@ let getAllQuestionnaire = function (req: Request, res: Response): void {
     });
 };
 
+
 let getAllTimeSlots = function (req: Request, res: Response): void {
 
+    //Eingehende Daten:
+    //[{"name":"UID","value":"753857"},{"name":"Praxis","value":"Neurologie Dr. Herbert Obst"},{"name":"Betreff","value":"sdf"},{"name":"Datum","value":"06/03/2019"}]
+
+    //TODO: DB
+    //Rufe Daten für GET-Request aus Parameter ab
+    console.log(req.query.json);
+
+    //Gebe freie Time Slots zurück
     let timeSlots = ["8:30","10:00","16:30"];
 
     res.json(timeSlots);
+};
+
+let createAppointment = function (req: Request, res: Response): void {
+
+    //Eingehende Daten:
+    //[ { name: 'UID', value: '753857' },
+    //   { name: 'Praxis', value: 'Neurologie Dr. Herbert Obst' },
+    //   { name: 'Datum', value: '06/10/2019' },
+    //   { name: 'timeSlot', value: '16:30' } ]
+    //TODO: DB
+    //Rufe Daten für POST-Request aus Body ab
+    console.log(req.body);
+
+    //termin für user in DB eintragen
+    res.end("success");
+
+
+};
+
+let getAllAppointments = function (req: Request, res: Response): void {
+    //TODO
+
 };
 
 module.exports = {
@@ -144,5 +175,7 @@ module.exports = {
     updateQuestionnaire: updateQuestionnaire,
     getQuestionnaire: getQuestionnaire,
     getAllQuestionnaire: getAllQuestionnaire,
-    getAllTimeSlots:getAllTimeSlots
+    getAllTimeSlots:getAllTimeSlots,
+    createAppointment:createAppointment,
+    getAllAppointments:getAllAppointments
 };
