@@ -42,10 +42,11 @@ app.get('/question/:id', controller.getQuestionnaire);
 /* GET all Element service*/
 app.get('/question', controller.getAllQuestionnaire);
 
-app.get('/timeSlot',  controller.getAllTimeSlots);
+app.get('/timeSlot/:praxis/:datum',  controller.getAllTimeSlots);
 
-app.post('/appointment',  controller.createAppointment);
+app.post('/appointment/:id',  controller.createAppointment);
 
+app.get('/appointment', controller.getAllAppointments);
 
 
 

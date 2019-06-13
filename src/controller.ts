@@ -1,4 +1,5 @@
 import * as Questionnaire from './model';
+import * as Termine from './terminModel';
 import {Request, Response} from 'express';
 const mongoose = require('mongoose');
 /**
@@ -8,7 +9,7 @@ const mongoose = require('mongoose');
  */
 
 //Tells mongoose the name of the db where it should connect to
-mongoose.connect("mongodb://localhost/awpDB");
+mongoose.connect("mongodb://localhost/dB");
 mongoose.set('debug', true);
 
 /*POST controller**/
@@ -59,11 +60,7 @@ let updateQuestionnaire = function (req: Request, res: Response): void {
         }
 
         let update = {
-            level: req.body.level,
-            pos: req.body.pos,
-            parent: req.body.parent,
-            icon: req.body.icon,
-            data: req.body.data
+            // TODO Einmal alles abtippen
         };
 
         questionnaire.update(update, function (err) {
@@ -82,6 +79,7 @@ let updateQuestionnaire = function (req: Request, res: Response): void {
         });
     });
 };
+
 
 /**
  * Author: Tobias Dahlke
@@ -132,42 +130,64 @@ let getAllQuestionnaire = function (req: Request, res: Response): void {
     });
 };
 
-
+// Alle Termine für einen speziellen Kalendar Tag
 let getAllTimeSlots = function (req: Request, res: Response): void {
+
+    let query = {datum: req.params.datum, praxis: req.params.praxis};
+    console.log(req.params.datum);
+    console.log(req.params.praxis);
+
+    Termine.findOne(query, {_id: 0}, function (err, Element) {
+        if (err) {
+            res.json({info: 'error at get request', error: err});
+            return;
+        }
+        if (Element) {
+            res.json({data: Element});
+        } else {
+            res.status(404);
+            res.json({info: 'No such Timeslot found'});
+        }
+    });
 
     //Eingehende Daten:
     //[{"name":"UID","value":"753857"},{"name":"Praxis","value":"Neurologie Dr. Herbert Obst"},{"name":"Betreff","value":"sdf"},{"name":"Datum","value":"06/03/2019"}]
 
     //TODO: DB
     //Rufe Daten für GET-Request aus Parameter ab
-    console.log(req.query.json);
+    //console.log(req.query.json);
 
     //Gebe freie Time Slots zurück
-    let timeSlots = ["8:30","10:00","16:30"];
+    //let timeSlots = ["8:30","10:00","16:30"];
 
-    res.json(timeSlots);
+    //res.json(timeSlots);
 };
 
 let createAppointment = function (req: Request, res: Response): void {
 
-    //Eingehende Daten:
-    //[ { name: 'UID', value: '753857' },
-    //   { name: 'Praxis', value: 'Neurologie Dr. Herbert Obst' },
-    //   { name: 'Datum', value: '06/10/2019' },
-    //   { name: 'timeSlot', value: '16:30' } ]
-    //TODO: DB
-    //Rufe Daten für POST-Request aus Body ab
     console.log(req.body);
 
-    //termin für user in DB eintragen
-    res.end("success");
+    let newAppointment = new Termine(req.body);
+    newAppointment.id = req.params.id;
 
-
+    newAppointment.save((err) => {
+        if (err) {
+            res.json(err);
+            return;
+        }
+        res.json(newAppointment);
+        res.end("success");
+    });
 };
 
 let getAllAppointments = function (req: Request, res: Response): void {
-    //TODO
-
+    Termine.find({}, {_id: 0}, (err, Termine) => {
+        if (err) {
+            res.json({info: 'error during find Termine', error: err});
+            return;
+        }
+        res.json({data: Termine});
+    });
 };
 
 module.exports = {

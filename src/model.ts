@@ -3,10 +3,6 @@ import * as mongoose from "mongoose";
 //Define beautifyUnique for better unique Validation error
 let beautifyUnique = require('mongoose-beautiful-unique-validation');
 
-//Definiton of Enum for Validation
-let schemaLayoutsVal = ["navigation", "scroll-x", "scroll-y", "matrix"];
-let structureComponentTypeVal = ["nav", "text", "img"];
-
 const questionSchema = new mongoose.Schema({
     id: {
         type: String,
