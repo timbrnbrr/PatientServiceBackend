@@ -1,6 +1,8 @@
 import * as Questionnaire from './model';
 import * as Termine from './terminModel';
 import {Request, Response} from 'express';
+import * as User from "./userModel";
+
 const mongoose = require('mongoose');
 /**
  * Controller Module
@@ -168,7 +170,6 @@ let createAppointment = function (req: Request, res: Response): void {
     console.log(req.body);
 
     let newAppointment = new Termine(req.body);
-    newAppointment.id = req.params.id;
 
     newAppointment.save((err) => {
         if (err) {
@@ -190,6 +191,38 @@ let getAllAppointments = function (req: Request, res: Response): void {
     });
 };
 
+let register = function (req: Request, res: Response): void {
+    let newUser = new User(req.body);
+
+    newUser.save((err) => {
+        if (err) {
+            res.json(err);
+            return;
+        }
+        res.json(newUser);
+        res.end("success");
+    });
+};
+
+let getLogin =  function (req: Request, res: Response): void {
+    console.log(req.body.id)
+    let query = {id: req.body.id, password: req.body.password};
+
+    User.findOne(query, {_id: 0}, function (err, Element) {
+        if (err) {
+            res.status(500);
+            res.json({info: 'error at get request', error: err});
+            return;
+        }
+        if (Element) {
+            res.json({info: 'Successfully logged in.'});
+        } else {
+            res.status(404);
+            res.json({info: 'No such Userdata found'});
+        }
+    });
+}
+
 module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,
@@ -197,5 +230,7 @@ module.exports = {
     getAllQuestionnaire: getAllQuestionnaire,
     getAllTimeSlots:getAllTimeSlots,
     createAppointment:createAppointment,
-    getAllAppointments:getAllAppointments
+    getAllAppointments:getAllAppointments,
+    register:register,
+    getLogin:getLogin
 };

@@ -2,13 +2,6 @@
 import * as express from "express";
 import * as bodyParser from "body-parser"
 
-// http = require('http');
-//const fs = require('fs');
-//const swaggerUi = require('swagger-ui-express');
-//const swaggerDocument = require('../../public/swagger.json');
-
-
-
 const app = express();
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
@@ -44,10 +37,12 @@ app.get('/question', controller.getAllQuestionnaire);
 
 app.get('/timeSlot/:praxis/:datum',  controller.getAllTimeSlots);
 
-app.post('/appointment/:id',  controller.createAppointment);
+app.post('/appointment',  controller.createAppointment);
 
 app.get('/appointment', controller.getAllAppointments);
 
+app.post('/login', controller.getLogin)
 
+app.post('/register', controller.register)
 
 export = server;
