@@ -182,13 +182,14 @@ let createAppointment = function (req: Request, res: Response): void {
 };
 
 let getAllAppointments = function (req: Request, res: Response): void {
-    Termine.find({}, {_id: 0}, (err, Termine) => {
+    /*Termine.find({}, {_id: 0}, (err, Termine) => {
         if (err) {
             res.json({info: 'error during find Termine', error: err});
             return;
         }
         res.json({data: Termine});
-    });
+    });*/
+    res.json({data: [{id: 123, status: 1, praxis: "Neurologie Dr. Herbert Obst", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Knie", bemerkung:""}, {id: 123, status: 2, praxis: "Dermatologie Dr. Bianca Herber", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Arm", bemerkung:""}]});
 };
 
 let register = function (req: Request, res: Response): void {
