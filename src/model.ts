@@ -9,6 +9,7 @@ const questionSchema = new mongoose.Schema({
         required: true,
         unique: 'Another Element with this ID already exists'
     },
+    userID: String,
     name: String,
     firstname: String,
     birthdate: Date,

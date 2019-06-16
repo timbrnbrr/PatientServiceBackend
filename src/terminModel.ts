@@ -9,6 +9,10 @@ const terminSchema = new mongoose.Schema({
         required: true,
         unique: 'Another Element with this ID already exists'
     },
+    status: String,
+    betreff: String,
+    bemerkung: String,
+    userId: String,
     praxis: String,
     datum: String,
     timeSlot: String,

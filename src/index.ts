@@ -45,4 +45,6 @@ app.post('/login', controller.getLogin)
 
 app.post('/register', controller.register)
 
+app.delete('/user/:id', controller.deleteUserAndAll)
+
 export = server;

@@ -224,6 +224,28 @@ let getLogin =  function (req: Request, res: Response): void {
     });
 }
 
+let deleteUserAndAll =  function (req: Request, res: Response): void {
+    console.log(req.body.id)
+
+    User.remove ({id: req.body.id}, {_id: 0}, function () {
+        Questionnaire.remove ({userId: req.body.id}, {_id: 0}, function () {
+            Termine.remove ({userId: req.body.id}, {_id: 0}, function (err) {
+                if (err) {
+                    res.status(500);
+                    res.json({info: 'error at delete request', error: err});
+                    return;
+                }
+                if (Element) {
+                    res.json({info: 'Successfully deleted in.'});
+                } else {
+                    res.status(404);
+                    res.json({info: 'No such Userdata found'});
+                }
+            });
+        });
+    });
+}
+
 module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,
@@ -233,5 +255,6 @@ module.exports = {
     createAppointment:createAppointment,
     getAllAppointments:getAllAppointments,
     register:register,
-    getLogin:getLogin
+    getLogin:getLogin,
+    deleteUserAndAll : deleteUserAndAll
 };
