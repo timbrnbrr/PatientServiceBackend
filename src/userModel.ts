@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
 //Enable the beautifyUnique Plugin
 userSchema.plugin(beautifyUnique);
 
-let User        = module.exports= mongoose.model("User", userSchema);
+let User = module.exports= mongoose.model("User", userSchema);
 
 export = User;
 

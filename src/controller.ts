@@ -135,11 +135,11 @@ let getAllQuestionnaire = function (req: Request, res: Response): void {
 // Alle Termine für einen speziellen Kalendar Tag
 let getAllTimeSlots = function (req: Request, res: Response): void {
 
-        console.log(req.params.datum);
+    console.log(req.params.datum);
     console.log(req.params.praxis);
 
-    /*
-    let query = {datum: req.params.datum, praxis: req.params.praxis};
+
+    /*let query = {datum: req.params.datum, praxis: req.params.praxis};
     console.log(req.params.datum);
     console.log(req.params.praxis);
 
@@ -156,15 +156,11 @@ let getAllTimeSlots = function (req: Request, res: Response): void {
         }
     });*/
 
-    //Eingehende Daten:
-    //[{"name":"UID","value":"753857"},{"name":"Praxis","value":"Neurologie Dr. Herbert Obst"},{"name":"Betreff","value":"sdf"},{"name":"Datum","value":"06/03/2019"}]
-
-    //TODO: DB
     //Rufe Daten für GET-Request aus Parameter ab
     //console.log(req.query.json);
 
     //Gebe freie Time Slots zurück
-    let timeSlots = ["8:30","10:00","16:30"];
+    let timeSlots = {data: ["8:30","10:00","16:30"]};
 
     res.json(timeSlots);
 };
@@ -186,14 +182,15 @@ let createAppointment = function (req: Request, res: Response): void {
 };
 
 let getAllAppointments = function (req: Request, res: Response): void {
-    /*Termine.find({}, {_id: 0}, (err, Termine) => {
+    Termine.find({}, {_id: 0}, (err, Termine) => {
         if (err) {
             res.json({info: 'error during find Termine', error: err});
             return;
         }
+        console.log(Termine);
         res.json({data: Termine});
-    });*/
-    res.json({data: [{id: 123, status: 1, praxis: "Neurologie Dr. Herbert Obst", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Knie", bemerkung:""}, {id: 123, status: 2, praxis: "Dermatologie Dr. Bianca Herber", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Arm", bemerkung:""}]});
+    });
+    //res.json({data: [{id: 123, status: 1, praxis: "Neurologie Dr. Herbert Obst", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Knie", bemerkung:""}, {id: 123, status: 2, praxis: "Dermatologie Dr. Bianca Herber", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Arm", bemerkung:""}]});
 };
 
 let register = function (req: Request, res: Response): void {
