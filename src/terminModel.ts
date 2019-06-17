@@ -6,7 +6,7 @@ let beautifyUnique = require('mongoose-beautiful-unique-validation');
 const terminSchema = new mongoose.Schema({
     id: {
         type: String,
-        required: true,
+        required: false,
         unique: 'Another Element with this ID already exists'
     },
     status: String,
