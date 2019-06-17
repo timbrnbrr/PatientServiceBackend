@@ -11,9 +11,10 @@ const questionSchema = new mongoose.Schema({
     },
     name: String, //Nachname
     firstname: String, //Vorname
-    birthdate: Date, //Geburtstag
+    birthdate: String, //Geburtstag
     street: String, //Straße
     plz: Number, //PLZ
+    city: String, //Stadt
     telnumber: Number, //Telefonnummer
     email: String, //E-Mail
     insuranceCompany: String, //Versicherung
