@@ -135,6 +135,10 @@ let getAllQuestionnaire = function (req: Request, res: Response): void {
 // Alle Termine für einen speziellen Kalendar Tag
 let getAllTimeSlots = function (req: Request, res: Response): void {
 
+        console.log(req.params.datum);
+    console.log(req.params.praxis);
+
+    /*
     let query = {datum: req.params.datum, praxis: req.params.praxis};
     console.log(req.params.datum);
     console.log(req.params.praxis);
@@ -150,7 +154,7 @@ let getAllTimeSlots = function (req: Request, res: Response): void {
             res.status(404);
             res.json({info: 'No such Timeslot found'});
         }
-    });
+    });*/
 
     //Eingehende Daten:
     //[{"name":"UID","value":"753857"},{"name":"Praxis","value":"Neurologie Dr. Herbert Obst"},{"name":"Betreff","value":"sdf"},{"name":"Datum","value":"06/03/2019"}]
@@ -160,9 +164,9 @@ let getAllTimeSlots = function (req: Request, res: Response): void {
     //console.log(req.query.json);
 
     //Gebe freie Time Slots zurück
-    //let timeSlots = ["8:30","10:00","16:30"];
+    let timeSlots = ["8:30","10:00","16:30"];
 
-    //res.json(timeSlots);
+    res.json(timeSlots);
 };
 
 let createAppointment = function (req: Request, res: Response): void {

@@ -36,6 +36,7 @@ app.get('/question/:id', controller.getQuestionnaire);
 app.get('/question', controller.getAllQuestionnaire);
 
 app.get('/timeSlot/:praxis/:datum',  controller.getAllTimeSlots);
+//app.get('/timeSlot',  controller.getAllTimeSlots);
 
 app.post('/appointment',  controller.createAppointment);
 

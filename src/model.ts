@@ -9,39 +9,28 @@ const questionSchema = new mongoose.Schema({
         required: true,
         unique: 'Another Element with this ID already exists'
     },
-    userID: String,
-    name: String,
-    firstname: String,
-    birthdate: Date,
-    street: String,
-    plz: Number,
-    telnumber: Number,
-    email: String,
-    insuranceCompany: String,
-    privateInsuranceType: String,
-    profession: String,
-    martialStatus: String,
-    size: Number,
-    weight: Number,
-    children: Number,
-    pregnancies: Number,
-    births: Number,
-    alcoholUsage: String,
-    smoking: String,
-    smokingQuantity: Number,
-    smokingType: String,
-    otherMeans: String,
-    chronicDiseases: String,
-    operations: String,
-    allergies: String,
-    medication: String,
-    childrenDiseases: String,
-    familyIllness: String,
-    healthExamination: String,
-    cancerScreening: String,
-    lastDoctor: String,
-    lastDoctorFindings: Boolean,
-    wantToBeReminded: Boolean
+    name: String, //Nachname
+    firstname: String, //Vorname
+    birthdate: Date, //Geburtstag
+    street: String, //Straße
+    plz: Number, //PLZ
+    telnumber: Number, //Telefonnummer
+    email: String, //E-Mail
+    insuranceCompany: String, //Versicherung
+    profession: String, //Beruf
+    size: Number, //Größe
+    weight: Number, //Gewicht
+    children: Number, //Anzahl Kinder
+    pregnancies: Number, //Anzahl Schwangerschaften
+    births: Number, //Anzahl Geburten
+    alcoholUsage: String, //Alkoholkonsum
+    smoking: String, //Raucher
+    otherMeans: String, //Andere Drogen
+    chronicDiseases: String, //Chronische Krankheiten
+    operations: String, //Bisherige Operationen
+    allergies: String, //Allergien
+    medication: String, //Medikamente
+    familyIllness: String //Erbliche Krankheiten
 },{versionKey: false});
 
 //Enable the beautifyUnique Plugin
