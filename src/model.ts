@@ -15,7 +15,7 @@ const questionSchema = new mongoose.Schema({
     street: String, //Straße
     plz: Number, //PLZ
     city: String, //Stadt
-    telnumber: Number, //Telefonnummer
+    telnumber: String, //Telefonnummer
     email: String, //E-Mail
     insuranceCompany: String, //Versicherung
     profession: String, //Beruf
