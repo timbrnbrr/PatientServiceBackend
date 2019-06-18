@@ -31,7 +31,6 @@ const questionSchema = new mongoose.Schema({
     operations: String, //Bisherige Operationen
     allergies: String, //Allergien
     medication: String, //Medikamente
-    familyIllness: String //Erbliche Krankheiten
 },{versionKey: false});
 
 //Enable the beautifyUnique Plugin
