@@ -1,6 +1,10 @@
 //To use express
 import * as express from "express";
 import * as bodyParser from "body-parser"
+import * as User from "./userModel";
+
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const webdav = require('webdav-server').v2;
 
 const app = express();
@@ -13,6 +17,45 @@ app.use(function(req, res, next) {
      next();
 });
 
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+// Passport
+
+require('https').globalAgent.options.rejectUnauthorized = false;
+
+app.use(require('serve-static')(__dirname + '/../../public'));
+app.use(require('cookie-parser')());
+// app.use(require('body-parser').urlencoded({ extended: true }));
+// app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+passport.use(new GoogleStrategy({
+        clientID: '548678070406-nbl0cuhi768lnlgabdrtocoscp0v4qh2.apps.googleusercontent.com',
+        clientSecret: 'nIxI9LP5WPOOPpi4BMHWKI33',
+        callbackURL: "http://localhost:3000/auth/google/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+        controller.afterRedirectFromGoogle(token, tokenSecret, profile, done);
+    })
+);
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/login')
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+//WebDav
 // JavaScript
 const webserver = new webdav.WebDAVServer({
     port: 1900
@@ -43,6 +86,9 @@ webserver.autoLoad((e) => {
 
 app.use(webdav.extensions.express('/my/sub/path', webserver))
 
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
 const server = app.listen(3000, function () {
     console.log('Server listening on port 3000');
 });
@@ -52,13 +98,11 @@ const server = app.listen(3000, function () {
 //To use functionality from the controller
 const controller = require('./controller');
 
-
-
 /* POST service*/
-app.post('/question/:id', controller.createQuestionnaire);
+app.post('/question', controller.createQuestionnaire);
 
 /* Put element service */
-app.put('/question/:id', controller.updateQuestionnaire);
+// app.put('/question/:id', controller.updateQuestionnaire);
 
 /*GET Element service*/
 app.get('/question/:id', controller.getQuestionnaire);
@@ -72,18 +116,24 @@ app.post('/appointment',  controller.createAppointment);
 
 app.get('/appointment', controller.getAllAppointments);
 
-app.post('/login', controller.getLogin)
+app.delete('/user/:id', controller.deleteUserAndAll);
 
-app.post('/register', controller.register)
-
-app.delete('/user/:id', controller.deleteUserAndAll)
-
-app.get('/my/sub/path',
+/*app.get('/my/sub/path',
     function(req,res)
     {
         console.log(webserver.rootFileSystem());
         res.send("express");
     }
-);
+);*/
+
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/appointment');
+});
 
 export = server;
