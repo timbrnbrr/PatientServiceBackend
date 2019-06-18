@@ -247,6 +247,9 @@ let deleteUserAndAll =  function (req: Request, res: Response): void {
     });
 }
 
+
+// Get directory contents
+
 module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,

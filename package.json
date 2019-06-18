@@ -6,6 +6,8 @@
     "start": "node ./dist/index.js"
   },
   "dependencies": {
+    "@webdav-server/dropbox": "^1.0.2",
+    "@webdav-server/ftp": "^1.0.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "debug": "^2.6.9",
@@ -22,7 +24,9 @@
     "pdfkit": "^0.8.3",
     "serve-favicon": "^2.5.0",
     "swagger-ui-express": "^1.0.8",
-    "uid2": "0.0.3"
+    "uid2": "0.0.3",
+    "webdav": "^2.8.0",
+    "webdav-server": "^2.4.6"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.16",
