@@ -6,6 +6,7 @@ import * as User from "./userModel";
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const webdav = require('webdav-server').v2;
+const ical = require('ical-generator');
 
 //To use functionality from the controller
 const controller = require('./controller');
@@ -138,6 +139,28 @@ app.get('/auth/google/callback',
         // Successful authentication, redirect home.
         res.json(userId);
        // res.redirect('/appointment');
+});
+
+const cal = ical({domain: 'localhost', name: 'my first iCal'});
+
+cal.createEvent({
+    start: new Date(),
+    end: new Date(new Date().getTime() + 3600000),
+    summary: 'Example Event',
+    description: 'It works ;)'
+});
+
+cal.createEvent({
+    start: new Date(),
+    end: new Date(new Date().getTime() + 3600000),
+    summary: 'Example Event2',
+    description: 'It works ;)'
+});
+
+app.get('/api/calendar/subscribe', function (req: Request, res: Response) {
+
+    cal.serve(res);
+
 });
 
 export = server;
