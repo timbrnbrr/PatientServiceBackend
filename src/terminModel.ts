@@ -4,15 +4,10 @@ import * as mongoose from "mongoose";
 let beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 const terminSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: false,
-        unique: 'Another Element with this ID already exists'
-    },
+    userId: String,
     status: String,
     betreff: String,
     bemerkung: String,
-    userId: String,
     praxis: String,
     datum: String,
     timeSlot: String,
