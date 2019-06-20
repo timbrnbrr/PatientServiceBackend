@@ -38,7 +38,7 @@ let createQuestionnaire = function (req: Request, res: Response): void {
         }
         res.json(newQuestionnaire);
     });
-}; 
+};
 
 /**
  * Author: Tobias Dahlke
@@ -218,7 +218,7 @@ let deleteUserAndAll =  function (req: Request, res: Response): void {
 
 let afterRedirectFromGoogle =  function (token, tokenSecret, profile, done): void {
     User.findOrCreate({ id: profile.id }, function (err, user) {
-        User.find({}, {_id: 0}, (err, User) => {
+        User.find({}, {_id: 0}, (err, User) => { // Just to see User
             if (err) {
                 return;
             }

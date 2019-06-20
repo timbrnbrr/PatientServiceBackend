@@ -30,6 +30,8 @@ app.use(require('cookie-parser')());
 app.use(passport.initialize());
 app.use(passport.session());
 
+let userId;
+
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
@@ -44,6 +46,7 @@ passport.use(new GoogleStrategy({
         callbackURL: "http://localhost:3000/auth/google/callback"
     },
     function(token, tokenSecret, profile, done) {
+        userId = profile.id;
         controller.afterRedirectFromGoogle(token, tokenSecret, profile, done);
     })
 );
@@ -80,7 +83,6 @@ webserver.autoLoad((e) => {
             'file0.txt': webdav.ResourceType.File       // /file0.txt
         })
     }
-
     webserver.start(() => console.log('READY'));
 })
 
@@ -133,7 +135,8 @@ app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/appointment');
+        res.json(userId);
+       // res.redirect('/appointment');
 });
 
 export = server;
