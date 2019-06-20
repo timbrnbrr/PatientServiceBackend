@@ -198,7 +198,9 @@ let createAppointment = function (req: Request, res: Response): void {
 };
 
 let getAllAppointments = function (req: Request, res: Response): void {
-    Termine.find({}, {_id: 0}, (err, Termine) => {
+    let query = {userId: req.params.id};
+
+    Termine.find(query, {_id: 0}, (err, Termine) => {
         if (err) {
             res.json({info: 'error during find Termine', error: err});
             return;

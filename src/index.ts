@@ -117,7 +117,7 @@ app.get('/timeSlot/:praxis/:datum',  controller.getAllTimeSlots);
 
 app.post('/appointment',  controller.createAppointment);
 
-app.get('/appointment', controller.getAllAppointments);
+app.get('/appointment/:id', controller.getAllAppointments);
 
 app.delete('/user/:id', controller.deleteUserAndAll);
 
