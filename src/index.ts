@@ -7,6 +7,9 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const webdav = require('webdav-server').v2;
 
+//To use functionality from the controller
+const controller = require('./controller');
+
 const app = express();
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
@@ -74,14 +77,13 @@ webserver.afterRequest((arg, next) => {
 
 webserver.autoLoad((e) => {
     if(e)
-    { // Couldn't load the 'data.json' (file is not accessible or it has invalid content)
+    {
         webserver.rootFileSystem().addSubTree(webserver.createExternalContext(), {
             'folder1': {                                // /folder1
-                'file1.txt': webdav.ResourceType.File,  // /folder1/file1.txt
-                'file2.txt': webdav.ResourceType.File   // /folder1/file2.txt
-            },
-            'file0.txt': webdav.ResourceType.File       // /file0.txt
+                'data.txt': webdav.ResourceType.File,  // /folder1/file1.txt
+            }
         })
+        controller.fillDataTxt();
     }
     webserver.start(() => console.log('READY'));
 })
@@ -96,8 +98,6 @@ const server = app.listen(3000, function () {
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-//To use functionality from the controller
-const controller = require('./controller');
 
 /* POST service*/
 app.post('/question', controller.createQuestionnaire);

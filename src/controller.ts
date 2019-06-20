@@ -2,7 +2,7 @@ import * as Questionnaire from './model';
 import * as Termine from './terminModel';
 import {Request, Response} from 'express';
 import * as User from "./userModel";
-
+const request = require('request');
 const mongoose = require('mongoose');
 /**
  * Controller Module
@@ -244,7 +244,28 @@ let afterRedirectFromGoogle =  function (token, tokenSecret, profile, done): voi
     return done(err, user);
 })};
 
-// Get directory contents
+let fillDataTxt = function () {
+
+    Termine.find({}, {_id: 0}, (err, Termine) => {
+        if (err) {
+            return;
+        }
+
+        const clientServerOptions = {
+            uri: 'http://localhost:3000/my/sub/path/folder1/data.txt',
+            body: Termine.toString(),
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'text/plain'
+            }
+        }
+
+        request(clientServerOptions, function (error, response) {
+            console.log(Termine);
+            return;
+        });
+    });
+}
 
 module.exports = {
     createQuestionnaire: createQuestionnaire,
@@ -256,5 +277,6 @@ module.exports = {
     createAppointment:createAppointment,
     getAllAppointments:getAllAppointments,
     deleteUserAndAll : deleteUserAndAll,
-    afterRedirectFromGoogle: afterRedirectFromGoogle
+    afterRedirectFromGoogle: afterRedirectFromGoogle,
+    fillDataTxt: fillDataTxt
 };
