@@ -40,6 +40,21 @@ let createQuestionnaire = function (req: Request, res: Response): void {
     });
 };
 
+let deleteQuestionnaire = function (req: Request, res: Response): void {
+    console.log(req.body);
+
+    let query = {id: req.params.id};
+
+    Questionnaire.remove(query, function (err) {
+        if (err) {
+            res.json({info: 'error at delete request', error: err});
+            return;
+        };
+
+        res.json({message: 'Deleted'})
+    });
+};
+
 /**
  * Author: Tobias Dahlke
  *
@@ -233,6 +248,7 @@ module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,
     getQuestionnaire: getQuestionnaire,
+    deleteQuestionnaire: deleteQuestionnaire,
     getAllQuestionnaire: getAllQuestionnaire,
     getAllTimeSlots:getAllTimeSlots,
     createAppointment:createAppointment,

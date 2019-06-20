@@ -12,7 +12,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(function(req, res, next) {
      res.header("Access-Control-Allow-Origin", "*");
-     // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT');
+     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
      next();
 });
@@ -88,7 +88,6 @@ webserver.autoLoad((e) => {
 
 app.use(webdav.extensions.express('/my/sub/path', webserver))
 
-
 /* ----------------------------------------------------------------------------------------------------------------- */
 
 const server = app.listen(3000, function () {
@@ -108,6 +107,8 @@ app.post('/question', controller.createQuestionnaire);
 
 /*GET Element service*/
 app.get('/question/:id', controller.getQuestionnaire);
+
+app.delete('/question/:id', controller.deleteQuestionnaire);
 
 /* GET all Element service*/
 app.get('/question', controller.getAllQuestionnaire);
