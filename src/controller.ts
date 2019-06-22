@@ -4,6 +4,7 @@ import {Request, Response} from 'express';
 import * as User from "./userModel";
 const request = require('request');
 const mongoose = require('mongoose');
+const ical = require('ical-generator');
 /**
  * Controller Module
  * @class Controller
@@ -267,6 +268,39 @@ let fillDataTxt = function () {
     });
 }
 
+let getICalFile = function (req: Request, res: Response): void {
+    const cal = ical({domain: 'localhost', name: 'Smart Patient Appointments'});
+
+    let query = {userId: req.params.id};
+
+    Termine.find(query, {_id: 0}, (err, Termine) => {
+
+        if (err) {
+            res.json({info: 'error during find Termine', error: err});
+            return;
+        }
+
+        Termine.forEach(function(appointment){
+
+            let dateString = appointment.datum.split(".");
+            let timeString = appointment.timeSlot.split(":");
+            let appointmentDate = new Date(dateString[2], dateString[1], dateString[0], timeString[0], timeString[1]);
+
+            cal.createEvent({
+                start: appointmentDate,
+                end: new Date(appointmentDate.getTime() + 30*60000), //Dauer von Termin 30 Minuten
+                summary: appointment.praxis,
+                description: appointment.betreff
+            });
+
+
+
+        });
+
+       cal.serve(res);
+    });
+}
+
 module.exports = {
     createQuestionnaire: createQuestionnaire,
     updateQuestionnaire: updateQuestionnaire,
@@ -278,5 +312,6 @@ module.exports = {
     getAllAppointments:getAllAppointments,
     deleteUserAndAll : deleteUserAndAll,
     afterRedirectFromGoogle: afterRedirectFromGoogle,
-    fillDataTxt: fillDataTxt
+    fillDataTxt: fillDataTxt,
+    getICalFile: getICalFile
 };
