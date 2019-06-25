@@ -55,16 +55,29 @@ passport.use(new GoogleStrategy({
 );
 
 function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login')
+    if (req.isAuthenticated()) {
+        console.log('true');
+        return next();
+    }
+    res.redirect('/auth/google')
 }
 
 /* ----------------------------------------------------------------------------------------------------------------- */
 
 //WebDav
 // JavaScript
+
+const userManager = new webdav.SimpleUserManager();
+const user = userManager.addUser('test', 'test', true);
+
+// Privilege manager (tells which users can access which files/folders)
+const privilegeManager = new webdav.SimplePathPrivilegeManager();
+privilegeManager.setRights(user, '/', [ 'all' ]);
+
 const webserver = new webdav.WebDAVServer({
-    port: 1900
+    port: 1900,
+   // httpAuthentication: new webdav.HTTPDigestAuthentication(userManager, 'Default realm'),
+   // privilegeManager: privilegeManager,
 });
 
 webserver.afterRequest((arg, next) => {
@@ -113,13 +126,13 @@ app.delete('/question/:id', controller.deleteQuestionnaire);
 /* GET all Element service*/
 app.get('/question', controller.getAllQuestionnaire);
 
-app.get('/timeSlot/:praxis/:datum',  controller.getAllTimeSlots);
+app.get('/timeSlot/:praxis/:datum', controller.getAllTimeSlots);
 
 app.post('/appointment',  controller.createAppointment);
 
 app.get('/appointment/:id', controller.getAllAppointments);
 
-app.delete('/user/:id', controller.deleteUserAndAll);
+app.get('/user/:id', controller.getUserAndAll);
 
 /*app.get('/my/sub/path',
     function(req,res)
@@ -137,7 +150,7 @@ app.get('/auth/google/callback',
     function(req, res) {
         // Successful authentication, redirect home.
         res.json(userId);
-       // res.redirect('/appointment');
+        // res.redirect('/question');
 });
 
 //iCal API

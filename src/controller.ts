@@ -209,26 +209,27 @@ let getAllAppointments = function (req: Request, res: Response): void {
         console.log(Termine);
         res.json({data: Termine});
     });
-    //res.json({data: [{id: 123, status: 1, praxis: "Neurologie Dr. Herbert Obst", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Knie", bemerkung:""}, {id: 123, status: 2, praxis: "Dermatologie Dr. Bianca Herber", datum: "12.07.2019", timeSlot: "10:30", betreff:"Schmerzen in Arm", bemerkung:""}]});
 };
 
-let deleteUserAndAll =  function (req: Request, res: Response): void {
+let getUserAndAll =  function (req: Request, res: Response): void {
     console.log(req.body.id)
 
-    User.remove ({id: req.body.id}, {_id: 0}, function () {
-        Questionnaire.remove ({userId: req.body.id}, {_id: 0}, function () {
-            Termine.remove ({userId: req.body.id}, {_id: 0}, function (err) {
+    Questionnaire.find({id: req.params.id}, {_id: 0}, (err, Questionnaires) => {
+        if (err) {
+            res.json({info: 'error during find Questionnaires', error: err});
+            return;
+        }
+        Termine.find({id: req.params.id}, {_id: 0}, (err, Termines) => {
+            if (err) {
+                res.json({info: 'error during find Termines', error: err});
+                return;
+            }
+            User.find({id: req.params.id}, {_id: 0}, (err, Users) => {
                 if (err) {
-                    res.status(500);
-                    res.json({info: 'error at delete request', error: err});
+                    res.json({info: 'error during find Users', error: err});
                     return;
                 }
-                if (Element) {
-                    res.json({info: 'Successfully deleted in.'});
-                } else {
-                    res.status(404);
-                    res.json({info: 'No such Userdata found'});
-                }
+                res.json({termine: Termines, fragebogen: Questionnaires, userdaten: Users});
             });
         });
     });
@@ -247,24 +248,23 @@ let afterRedirectFromGoogle =  function (token, tokenSecret, profile, done): voi
 
 let fillDataTxt = function () {
 
-    Termine.find({}, {_id: 0}, (err, Termine) => {
-        if (err) {
-            return;
-        }
+    const arztData: String = "Praxis Nils und Freunde, Gebiet: Zahnarzt, Öffnungszeiten: Mo-Fr 9.00 - 18.00, Tel: 0176 XXXXXXXXXX \n" +
+        "Praxis Tobias und Freunde, Gebiet: Schönheitsoperationen, Öffnungszeiten: Mo-Fr 9.00 - 18.00, Tel: 0176 XXXXXXXXXX \n" +
+        "Praxis Tim und Freunde, Gebiet: Psychologe, Öffnungszeiten: Mo-Fr 9.00 - 18.00, Tel: 0176 XXXXXXXXXX \n" +
+        "Praxis Marcel und Freunde, Gebiet: Suchtberatung, Öffnungszeiten: Mo-Fr 9.00 - 18.00, Tel: 0176 XXXXXXXXXX";
 
-        const clientServerOptions = {
-            uri: 'http://localhost:3000/my/sub/path/folder1/data.txt',
-            body: Termine.toString(),
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'text/plain'
-            }
+    const clientServerOptions = {
+        uri: 'http://localhost:3000/my/sub/path/folder1/data.txt',
+        body: arztData,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'text/plain'
         }
+    }
 
-        request(clientServerOptions, function (error, response) {
-            console.log(Termine);
-            return;
-        });
+    request(clientServerOptions, function (error, response) {
+        console.log(arztData);
+        return;
     });
 }
 
@@ -310,7 +310,7 @@ module.exports = {
     getAllTimeSlots:getAllTimeSlots,
     createAppointment:createAppointment,
     getAllAppointments:getAllAppointments,
-    deleteUserAndAll : deleteUserAndAll,
+    getUserAndAll : getUserAndAll,
     afterRedirectFromGoogle: afterRedirectFromGoogle,
     fillDataTxt: fillDataTxt,
     getICalFile: getICalFile
