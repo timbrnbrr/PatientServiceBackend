@@ -281,10 +281,11 @@ let getICalFile = function (req: Request, res: Response): void {
         }
 
         Termine.forEach(function(appointment){
+            console.log(appointment);
 
             let dateString = appointment.datum.split(".");
             let timeString = appointment.timeSlot.split(":");
-            let appointmentDate = new Date(dateString[2], dateString[1], dateString[0], timeString[0], timeString[1]);
+            let appointmentDate = new Date(dateString[2], dateString[1] - 1, dateString[0], timeString[0], timeString[1]);
 
             cal.createEvent({
                 start: appointmentDate,
