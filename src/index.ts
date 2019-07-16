@@ -143,15 +143,38 @@ app.get('/user/:id', controller.getUserAndAll);
 );*/
 
 app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile'] }));
-
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
         // Successful authentication, redirect home.
-        res.json(userId);
+        // res.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
+        console.log("Adding CORS Headers ........................");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Max-Age", "3600");
+        res.setHeader("Access-Control-Allow-Headers", "X-PINGOTHER,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
+        // res.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+
+        //res.status(200);
+        res.sendStatus(200);
+    }),
+    passport.authenticate('google', { scope: ['profile'] })
+    ;
+
+app.get('/auth/google/callback'),
+    function(req, res) {
+        // Successful authentication, redirect home.
+      // res.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
+        console.log("Adding CORS Headers ........................");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Max-Age", "3600");
+        res.setHeader("Access-Control-Allow-Headers", "X-PINGOTHER,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
+        // res.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+
+        //res.status(200);
+        res.sendStatus(200);
         // res.redirect('/question');
-});
+},
+passport.authenticate('google', { failureRedirect: '/login' });
 
 //iCal API
 app.get('/api/calendar/subscribe/:id',controller.getICalFile);
