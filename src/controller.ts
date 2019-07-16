@@ -212,7 +212,7 @@ let getAllAppointments = function (req: Request, res: Response): void {
 };
 
 let getUserAndAll =  function (req: Request, res: Response): void {
-    console.log(req.body.id)
+    console.log(req.body.id);
 
     Questionnaire.find({id: req.params.id}, {_id: 0}, (err, Questionnaires) => {
         if (err) {
