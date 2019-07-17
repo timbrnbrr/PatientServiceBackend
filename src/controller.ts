@@ -241,7 +241,7 @@ let afterRedirectFromGoogle =  function (token, tokenSecret, profile, done): voi
             if (err) {
                 return;
             }
-            console.log(User);
+            //console.log(User);
         });
     return done(err, user);
 })};

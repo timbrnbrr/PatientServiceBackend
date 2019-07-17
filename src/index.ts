@@ -2,6 +2,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser"
 import * as User from "./userModel";
+const cors = require('cors');
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -13,13 +14,23 @@ const controller = require('./controller');
 const app = express();
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
-app.use(function(req, res, next) {
-     res.header("Access-Control-Allow-Origin", "*");
-     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-     next();
-});
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+        res.sendStatus(200);
+    }
+    else {
+        next();
+    }
+};
+app.use(allowCrossDomain);
+
+app.use(cors());
 /* ----------------------------------------------------------------------------------------------------------------- */
 
 // Passport
@@ -142,39 +153,22 @@ app.get('/user/:id', controller.getUserAndAll);
     }
 );*/
 
-app.get('/auth/google',
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile'],
+    session: false } ));
+   /* function(req, res, next) {
+    passport.authenticate('google',  { scope: ['profile'] })});
+   // passport.authenticate('google', { scope: ['profile'] }));*/
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: '/login' }),
     function(req, res) {
-        // Successful authentication, redirect home.
-        // res.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
-        console.log("Adding CORS Headers ........................");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.setHeader("Access-Control-Max-Age", "3600");
-        res.setHeader("Access-Control-Allow-Headers", "X-PINGOTHER,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-        // res.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+        console.log("reached2")
+        //res.redirect('/');
+        res.status(200).redirect('http://localhost:4000/user/' + userId);
+    });
 
-        //res.status(200);
-        res.sendStatus(200);
-    }),
-    passport.authenticate('google', { scope: ['profile'] })
-    ;
-
-app.get('/auth/google/callback'),
-    function(req, res) {
-        // Successful authentication, redirect home.
-      // res.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
-        console.log("Adding CORS Headers ........................");
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.setHeader("Access-Control-Max-Age", "3600");
-        res.setHeader("Access-Control-Allow-Headers", "X-PINGOTHER,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-        // res.addHeader("Access-Control-Expose-Headers", "xsrf-token");
-
-        //res.status(200);
-        res.sendStatus(200);
-        // res.redirect('/question');
-},
-passport.authenticate('google', { failureRedirect: '/login' });
 
 //iCal API
 app.get('/api/calendar/subscribe/:id',controller.getICalFile);
