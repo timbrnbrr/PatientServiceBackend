@@ -166,7 +166,7 @@ app.get('/auth/google/callback',
     function(req, res) {
         console.log("reached2")
         //res.redirect('/');
-        res.status(200).redirect('http://localhost:4000/user/' + userId);
+        res.status(200).redirect('http://localhost:4000/index.html#' + userId);
     });
 
 
