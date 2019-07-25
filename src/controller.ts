@@ -293,9 +293,6 @@ let getICalFile = function (req: Request, res: Response): void {
                 summary: appointment.praxis,
                 description: appointment.betreff
             });
-
-
-
         });
 
        cal.serve(res);
